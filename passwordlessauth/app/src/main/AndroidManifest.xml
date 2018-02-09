@@ -22,7 +22,9 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".serverresponse" />
-        <activity android:name=".verifyrespose"></activity>
+        <activity android:name=".verifyrespose" />
+        <activity android:name=".loginverify" />
+        <activity android:name=".frontpage"></activity>
     </application>
 
 </manifest>

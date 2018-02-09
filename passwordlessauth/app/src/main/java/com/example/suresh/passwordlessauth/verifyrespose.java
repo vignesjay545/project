@@ -35,7 +35,7 @@ TextView e;
         Intent b1=getIntent();
         if(b1!=null) {
             String value1 = b1.getStringExtra("res");
-if(value1.equals("registered")){
+if(value1.equals("success")){
     e.setText("registration sucessfully");
 }
 else{

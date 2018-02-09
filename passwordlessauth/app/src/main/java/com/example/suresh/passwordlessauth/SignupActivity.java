@@ -3,6 +3,7 @@ package com.example.suresh.passwordlessauth;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -41,7 +42,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static android.support.v4.content.ContextCompat.startActivity;
-import static android.widget.Toast.*;
+
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -90,7 +91,7 @@ public class SignupActivity extends AppCompatActivity {
                 b1.setEnabled(false);
                 initial();
                 if (!validate()) {
-                    makeText(SignupActivity.this, "Enter valid Email ", LENGTH_SHORT).show();
+                    Toast.makeText(SignupActivity.this, "Enter valid Email ", Toast.LENGTH_SHORT).show();
                 } else {
                     final String imei1, imei2, useremail;
                     imei1 = s;
@@ -237,27 +238,13 @@ class PostDataAsyncTask extends AsyncTask<String, String, String> {
                 }
                 else if(responseStr.equals("activated")){
                     Log.i(TAG,"activated");
-                    AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);
-                    dlgAlert.setMessage("your Account is already exist");
-                    dlgAlert.setTitle("Warning");
-                    dlgAlert.setPositiveButton("OK", null);
-                    dlgAlert.setCancelable(true);
-                    AlertDialog alert=dlgAlert.create();
-                    alert.show();
-                    //dlgAlert.create().show();
-                    Log.i(TAG,"activated");
+                    Toast.makeText(context, "Already you haven account.please Login with that  ", Toast.LENGTH_LONG).show();
 
                 }
                 else{
 
                     Log.i(TAG,"activated1");
-                    AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);
-                    dlgAlert.setMessage("your Account is not activated yet");
-                    dlgAlert.setTitle("Warning");
-                    dlgAlert.setPositiveButton("OK", null);
-                    dlgAlert.setCancelable(true);
-                    AlertDialog alert=dlgAlert.create();
-                    alert.show();
+                    Toast.makeText(context, "Please Do again.Some error happen", Toast.LENGTH_LONG).show();
                     // dlgAlert.create().show();
                     Log.i(TAG,"activate1d");
                 }

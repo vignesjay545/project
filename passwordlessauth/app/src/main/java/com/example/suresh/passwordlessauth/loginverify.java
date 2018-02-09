@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,31 +24,28 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.provider.LiveFolders.INTENT;
-//import static android.widget.Toast.LENGTH_LONG;
 //import static android.widget.Toast.makeText;
 
-public class serverresponse extends AppCompatActivity {
+public class loginverify extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_serverresponse);
-        final EditText e2=(EditText)findViewById(R.id.vcode);
+        setContentView(R.layout.activity_loginverify);
+        final EditText e2=(EditText)findViewById(R.id.vlcode);
         e2.setText("");
         Intent b1=getIntent();
         if(b1!=null) {
             String value1 = b1.getStringExtra("res");
-           final String useremail = b1.getStringExtra("useremail");
+            final String useremail = b1.getStringExtra("useremail");
             Toast.makeText(this, "verification code sent in mail", Toast.LENGTH_LONG).show();
 
-            final Button b = (Button) findViewById(R.id.bverify);
+            final Button b = (Button) findViewById(R.id.blverify);
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                            b.setEnabled(false);
+                    b.setEnabled(false);
                     String s = e2.getText().toString();
                     int flag = 0;
                     for (int i = 0; i < s.length(); i++) {
@@ -58,7 +54,7 @@ public class serverresponse extends AppCompatActivity {
                         } else flag = 0;
                     }
                     if (s == "" || s.length() != 6 || flag == 1) {
-                        Toast.makeText(serverresponse.this, "Enter valid code", Toast.LENGTH_LONG).show();
+                        Toast.makeText(loginverify.this, "Enter valid code", Toast.LENGTH_LONG).show();
                     } else {
 
 
@@ -91,7 +87,7 @@ public class serverresponse extends AppCompatActivity {
                                     String useremail = strings[0];
                                     String s=strings[1];
 
-                                    String postReceiverUrl = "http://passwordlessauth.000webhostapp.com/verifyemail.php";
+                                    String postReceiverUrl = "http://passwordlessauth.000webhostapp.com/loginverify.php";
 
 
                                     // HttpClient
@@ -105,26 +101,34 @@ public class serverresponse extends AppCompatActivity {
                                     nameValuePairs.add(new BasicNameValuePair("verifycode", s));
                                     nameValuePairs.add(new BasicNameValuePair("useremail", useremail));
                                     httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                                   // makeText(serverresponse.this, "Wait a Second for response", Toast.LENGTH_LONG).show();
+                                    // makeText(serverresponse.this, "Wait a Second for response", Toast.LENGTH_LONG).show();
                                     HttpResponse response = httpClient.execute(httpPost);
                                     HttpEntity resEntity = response.getEntity();
                                     if (resEntity != null) {
                                         String responseStr = EntityUtils.toString(resEntity).trim();
+
+
                                         if(responseStr.equals("success")){
                                         Intent i5;
-                                        i5 = new Intent(serverresponse.this, verifyrespose.class);
+                                        i5 = new Intent(loginverify.this, frontpage.class);
                                         i5.putExtra("res", responseStr);
                                         i5.putExtra("useremail",useremail);
                                         startActivity(i5);}
                                         else if(responseStr.equals("invalid")){
-                                            Toast.makeText(serverresponse.this, "OTP Invalid please fill correct.", Toast.LENGTH_LONG).show();
-                                            b.setEnabled(true);}
+                                            Toast.makeText(loginverify.this,"you entered a invalid code",Toast.LENGTH_LONG);
+                                            b.setEnabled(true);
 
+                                        }
+                                        else if(responseStr.equals("notregistered")){
+                                            Toast.makeText(loginverify.this,"account not found.please create new one",Toast.LENGTH_LONG);
+                                        }
+                                        else if(responseStr.equals("notactivated")){
+                                            Toast.makeText(loginverify.this,"Account needs activation",Toast.LENGTH_LONG);
+                                        }
+                                        else{
+                                            Toast.makeText(loginverify.this,"Something goes wrong .please do again",Toast.LENGTH_LONG);
+                                        }
                                     }
-                                    else{
-                                        Toast.makeText(serverresponse.this, "Error .please Do again", Toast.LENGTH_LONG).show();
-                                    }
-
 
                                 } catch (ClientProtocolException e) {
                                     e.printStackTrace();
